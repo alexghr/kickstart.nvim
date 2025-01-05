@@ -173,7 +173,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 --
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -647,6 +647,8 @@ require('lazy').setup({
             },
           },
         },
+
+        helm_ls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -680,6 +682,12 @@ require('lazy').setup({
         },
       }
     end,
+  },
+
+  {
+    'noir-lang/noir-nvim',
+    dependencies = {},
+    config = function() end,
   },
 
   {
@@ -986,9 +994,14 @@ require('lazy').setup({
       },
       use_default_keymaps = true,
       skip_confirm_for_simple_edits = true,
+      view_options = {
+        show_hidden = true,
+      },
     },
     dependencies = { { 'echasnovski/mini.icons', opts = {} } },
   },
+
+  'tpope/vim-fugitive',
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -1009,6 +1022,13 @@ require('lazy').setup({
       lazy = '💤 ',
     },
   },
+})
+
+local augroup = vim.api.nvim_create_augroup('alexghr', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'typescript,typescriptreact',
+  group = augroup,
+  command = 'compiler tsc | setlocal makeprg=yarn\\ tsc\\ -b',
 })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
