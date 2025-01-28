@@ -629,7 +629,9 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        clangd = {},
+        clangd = {
+          cmd = { 'clangd-16' },
+        },
         -- gopls = {},
         -- pyright = {},
         rust_analyzer = {},
@@ -1025,6 +1027,19 @@ require('lazy').setup({
           require('lint').try_lint()
         end,
       })
+    end,
+  },
+  {
+    'nvim-neorg/neorg',
+    lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+    version = '*', -- Pin Neorg to the latest stable release
+    config = function()
+      require('neorg').setup {
+        load = {
+          ['core.defaults'] = {},
+          ['core.concealer'] = {},
+        },
+      }
     end,
   },
 }, {
